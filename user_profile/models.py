@@ -22,6 +22,8 @@ class Team(models.Model):
 
         members = json.loads(r.content)['members']
         for m in members:
+            if m['is_bot']:
+                continue
             user, created = User.objects.get_or_create(slack_id=m['id'], email=m['profile']['email'],
                                                        username=m['profile']['email'][:30])
             user.slack_team_id = self.slack_id
